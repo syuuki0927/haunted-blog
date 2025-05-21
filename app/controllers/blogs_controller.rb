@@ -24,6 +24,7 @@ class BlogsController < ApplicationController
 
   def create
     @blog = current_user.blogs.new(blog_params)
+    @blog.random_eyecatch = false unless @blog.user.premium
 
     if @blog.save
       redirect_to blog_url(@blog), notice: 'Blog was successfully created.'
@@ -34,6 +35,7 @@ class BlogsController < ApplicationController
 
   def update
     @blog = current_user.blogs.find(params[:id])
+    params[:blog][:random_eyecatch] = false unless @blog.user.premium
 
     if @blog.update(blog_params)
       redirect_to blog_url(@blog), notice: 'Blog was successfully updated.'
