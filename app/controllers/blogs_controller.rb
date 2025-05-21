@@ -8,7 +8,10 @@ class BlogsController < ApplicationController
   end
 
   def show
-    @blog = Blog.find(params[:id])
+    blog = Blog.find(params[:id])
+    raise ActiveRecord::RecordNotFound if blog.secret? && !blog.owned_by?(current_user)
+
+    @blog = blog
   end
 
   def new
