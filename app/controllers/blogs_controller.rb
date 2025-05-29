@@ -50,9 +50,8 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    checking_params = params.require(:blog).permit(:title, :content, :secret, :random_eyecatch)
-    checking_params.delete(:random_eyecatch) unless current_user.premium
-
-    checking_params
+    permit_params = %i[title content secret]
+    permit_params.append(:random_eyecatch) if current_user.premium
+    params.require(:blog).permit(*permit_params)
   end
 end
