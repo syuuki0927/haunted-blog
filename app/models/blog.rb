@@ -13,6 +13,14 @@ class Blog < ApplicationRecord
     where('title LIKE ? OR content LIKE ?', "%#{term}%", "%#{term}%")
   }
 
+  scope :visible, lambda { |user|
+    if !user.nil?
+      user.blogs.or(published)
+    else
+      published
+    end
+  }
+
   scope :default_order, -> { order(id: :desc) }
 
   def owned_by?(target_user)
