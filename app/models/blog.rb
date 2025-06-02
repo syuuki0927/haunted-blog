@@ -13,13 +13,7 @@ class Blog < ApplicationRecord
     where('title LIKE ? OR content LIKE ?', "%#{term}%", "%#{term}%")
   }
 
-  scope :visible, lambda { |user|
-    if !user.nil?
-      user.blogs.or(published)
-    else
-      published
-    end
-  }
+  scope :visible, ->(user) { published.or(where(user:)) }
 
   scope :default_order, -> { order(id: :desc) }
 
