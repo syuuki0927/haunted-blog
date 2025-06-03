@@ -50,8 +50,8 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    permit_param_keyss = %i[title content secret]
-    permit_param_keyss.append(:random_eyecatch) if current_user.premium
-    params.require(:blog).permit(*permit_param_keyss)
+    permit_param_keys = %i[title content secret]
+    permit_param_keys.append(:random_eyecatch) if current_user.premium
+    params.require(:blog).permit(*permit_param_keys)
   end
 end
