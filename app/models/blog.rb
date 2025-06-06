@@ -10,8 +10,10 @@ class Blog < ApplicationRecord
   scope :published, -> { where('secret = FALSE') }
 
   scope :search, lambda { |term|
-    where("title LIKE '%#{term}%' OR content LIKE '%#{term}%'")
+    where('title LIKE ? OR content LIKE ?', "%#{term}%", "%#{term}%")
   }
+
+  scope :visible, ->(user) { published.or(where(user:)) }
 
   scope :default_order, -> { order(id: :desc) }
 
